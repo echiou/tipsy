@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+{% block body %}
+  <div class="container">
+    <div class="row">
+      <div class="twelve columns u-center">
+        {% if updates %}
+          <table class="u-full-width">
+            <thead>
+              <tr>
+                <th>UPC</th>
+                <th>Weight</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for update in updates %}
+              <tr>
+                <td>{{ update.UPC }}</td>
+                <td>{{ update.weight }}</td>
+              </tr>
+              {% endfor %}
+            <tbody>
+          </table>
+        {% else %}
+          <h3>No updates!</h2>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+{% endblock %}
