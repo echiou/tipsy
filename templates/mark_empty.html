@@ -3,23 +3,21 @@
   <div class="container">
     <div class="row">
       <div class="twelve columns u-center">
-        <h2>Add New Inventory</h2>
+        <h2>Mark Empty Bottles</h2>
       </div>
     </div>
     <form action="{{ url_for('add_brand') }}" method=post class=add-brand>
       <div class="row">
         <div class="nine columns">
-          <label>Add Brand</label>
-          <input class="u-full-width" type=text placeholder="Smirnoff Raspberry" name=name>
+          <label>Liquor</label>
+          <input class="u-full-width" type=text placeholder="Maker's Mark" name=name>
         </div>
         <div class="three columns">
           <label>Quantity</label>
-          <input class="u-full-width" type=text placeholder="10" name=quantity>
+          <input class="u-full-width" type=text placeholder="5" name=quantity>
         </div>
-      </div>
-      <div class="row">
         <div class="twelve columns">
-          <input class="u-full-width button-primary" type=submit value=Add>
+          <input class="u-full-width button-primary" type=submit value=Done>
         </div>
       </div>
     </form>

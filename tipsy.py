@@ -39,6 +39,10 @@ def index():
 def add_inventory():
     return render_template('add_inventory.html')
 
+@app.route('/mark_empty')
+def mark_empty():
+    return render_template('mark_empty.html')
+
 @app.route('/inventory')
 def show_inventory():
     cur = g.db.execute('select name from brands order by id desc')

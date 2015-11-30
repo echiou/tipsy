@@ -3,18 +3,18 @@
   <div class="container">
     <div class="row">
       <div class="four columns">
-        <a href=/add_inventory>
+        <a href={{ url_for('add_inventory') }}>
           <button class="u-full-width">Add New Inventory</button>
         </a>
       </div>
       <div class="four columns">
-        <a href=/brands>
+        <a href={{ url_for('mark_empty') }}>
           <button class="u-full-width">Mark Empty Bottles</button>
         </a>
       </div>
       <div class="four columns">
-        <a href=/inventory>
-          <button class="u-full-width">Inventory</button>
+        <a href={{ url_for('show_inventory') }}>
+          <button class="u-full-width">Liquor Inventory</button>
         </a>
       </div>
     </div>
