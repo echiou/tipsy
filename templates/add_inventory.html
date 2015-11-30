@@ -1,0 +1,20 @@
+{% extends "layout.html" %}
+{% block body %}
+  <div class="container">
+    <form action="{{ url_for('add_brand') }}" method=post class=add-brand>
+      <div class="row">
+        <div class="nine columns">
+          <label>Add Brand</label>
+          <input class="u-full-width" type=text placeholder="Smirnoff Raspberry" name=name>
+        </div>
+        <div class="three columns">
+          <label>Quantity</label>
+          <input class="u-full-width" type=text placeholder="10" name=quantity>
+        </div>
+        <div class="twelve columns">
+          <input class="u-full-width" type=submit value=Add>
+        </div>
+      </div>
+    </form>
+  </div>
+{% endblock %}

@@ -1,0 +1,19 @@
+<!doctype html>
+<title>Tipsy</title>
+<link rel=stylesheet type=text/css href="{{ url_for('static', filename='normalize.css') }}">
+<link rel=stylesheet type=text/css href="{{ url_for('static', filename='skeleton.css') }}">
+<link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
+<div class=page>
+  <div class="container">
+
+    <div class="row">
+      <div class="twelve columns u-center">
+        <h1>Tipsy</h1>
+        {% for message in get_flashed_messages() %}
+        <div class=flash>{{ message }}</div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+  {% block body %}{% endblock %}
+</div>
