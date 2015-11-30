@@ -2,6 +2,7 @@ import sqlite3
 from flask import Flask, request, session, g, redirect, url_for, \
   abort, render_template, flash
 from contextlib import closing
+from flask.ext.bower import Bower
 
 DATABASE = '/tmp/tipsy.db'
 DEBUG = True
@@ -11,6 +12,8 @@ PASSWORD = 'default'
 
 app = Flask(__name__)
 app.config.from_object(__name__)
+
+Bower(app)
 
 def init_db():
   with closing(connect_db()) as db:
