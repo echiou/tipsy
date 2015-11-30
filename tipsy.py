@@ -37,15 +37,23 @@ def index():
 
 @app.route('/add_inventory')
 def add_inventory():
-    cur = g.db.execute('select name from brands order by id desc')
-    brands = [dict(name=row[0]) for row in cur.fetchall()]
-    return render_template('add_inventory.html', brands=brands)
+    return render_template('add_inventory.html')
+
+@app.route('/mark_empty')
+def mark_empty():
+    return render_template('mark_empty.html')
 
 @app.route('/inventory')
 def show_inventory():
     cur = g.db.execute('select name from brands order by id desc')
     brands = [dict(name=row[0]) for row in cur.fetchall()]
     return render_template('show_inventory.html', brands=brands)
+
+@app.route('/live_feed')
+def show_live_feed():
+    cur = g.db.execute('select UPC, weight from updates order by id desc')
+    updates = [dict(UPC=row[0], weight=row[1]) for row in cur.fetchall()]
+    return render_template('live_feed.html', updates=updates)
 
 @app.route('/add', methods=['POST'])
 def add_brand():
@@ -55,5 +63,13 @@ def add_brand():
     flash('New brand was successfully posted')
     return redirect(url_for('add_inventory'))
 
+@app.route('/update', methods=['POST'])
+def update_inventory():
+    g.db.execute('insert into updates (UPC, weight) values (?, ?)',
+                [request.form['UPC'], request.form['weight']])
+    g.db.commit()
+    flash('brand was successfully updated')
+    return redirect(url_for('show_live_feed'))
+
 if __name__ == '__main__':
-  app.run()
+  app.run(host='0.0.0.0')

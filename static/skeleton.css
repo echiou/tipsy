@@ -158,7 +158,8 @@ p {
 /* Links
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 a {
-  color: #1EAEDB; }
+  color: #1EAEDB;
+  text-decoration: none; }
 a:hover {
   color: #0FA0CE; }
 
@@ -371,6 +372,8 @@ form {
   float: left; }
 .u-center {
   text-align: center; }
+.u-top-container {
+  margin-top: 3rem; }
 
 
 /* Misc
