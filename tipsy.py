@@ -1,4 +1,5 @@
 import sqlite3
+import re
 from flask import Flask, request, session, g, redirect, url_for, \
   abort, render_template, flash
 from contextlib import closing
@@ -60,10 +61,11 @@ def show_live_feed():
 
 @app.route('/add', methods=['POST'])
 def add_brand():
+    brand = [request.form['name']]
     g.db.execute('insert into brands (name) values (?)',
-                 [request.form['name']])
+                 brand)
     g.db.commit()
-    flash('New brand was successfully posted')
+    flash(re.escape(' bottles of ' + brand[0] + ' added.'), 'success')
     return redirect(url_for('add_inventory'))
 
 @app.route('/update', methods=['POST'])
