@@ -1,3 +1,4 @@
 .DS_Store
 /tipsy-env
-
+tipsy_venv/
+*.pyc
