@@ -1,21 +1,26 @@
 <!doctype html>
 <title>Tipsy</title>
-<link rel=stylesheet type=text/css href="{{ url_for('static', filename='normalize.css') }}">
-<link rel=stylesheet type=text/css href="{{ url_for('static', filename='skeleton.css') }}">
-<link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
+<link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/normalize.css') }}">
+<link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/skeleton.css') }}">
+<link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/style.css') }}">
 
 <script src="{{ url_for('bower.static', filename='jquery/dist/jquery.js') }}"></script>
 
 <link rel=stylesheet type=text/css href="{{ url_for('bower.static', filename='toastr/toastr.css') }}">
 <script src="{{ url_for('bower.static', filename='toastr/toastr.js') }}"></script>
+<script src="{{ url_for('static', filename='js/tipsy_toastr.js') }}"></script>
 
 <div class=page>
   <div class="container u-top-container">
     <div class="row">
       <div class="twelve columns u-center">
         <h1><a href="/">Tipsy</a></h1>
-        {% for message in get_flashed_messages() %}
-        <div class=flash>{{ message }}</div>
+        {% for category, message in get_flashed_messages(with_categories=true) %}
+        <script type=text/javascript>
+          $(document).ready(function() {
+            toastr.{{ category }}('{{ message|safe }}');
+          })
+        </script>
         {% endfor %}
       </div>
     </div>
