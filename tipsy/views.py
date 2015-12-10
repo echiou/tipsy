@@ -1,7 +1,7 @@
 import sqlite3
 import re
-from flask import Flask, request, session, g, redirect, url_for, \
-  abort, render_template, flash
+from flask import Flask, Response, request, session, g, redirect, url_for, \
+  abort, render_template, flash, stream_with_context
 from contextlib import closing
 from flask.ext.bower import Bower
 from tipsy import app
@@ -59,12 +59,26 @@ def confirm_updates():
 
     for name, update in updates_to_commit.iteritems():
       old_record = g.db.execute('select * from inventory where name=?', [name]).fetchall()[0]
-      g.db.execute('update inventory set current=?, quantity=? where name=?',
-                   [old_record['current'] - update[0] - update[1], old_record['quantity'] - update[1], name])
+      new_quantity = old_record['quantity'] - update[1]
+      if new_quantity == 0:
+          g.db.execute('delete from inventory where name=?', [name])
+      else:
+          g.db.execute('update inventory set current=?, quantity=? where name=?',
+                       [old_record['current'] - update[0] - update[1], new_quantity, name])
     g.db.execute('delete from updates')
     g.db.commit()
     flash('Inventory updated.', 'success')
     return redirect(url_for('index'))
+
+@app.route('/export.csv')
+def generate_csv():
+    def generate():
+        for row in g.db.execute('select * from inventory').fetchall():
+            new_row = []
+            for member in row:
+                new_row.append(str(member))
+            yield ','.join(new_row) + '\n'
+    return Response(stream_with_context(generate()), mimetype='text/csv')
 
 @app.route('/add_inventory', methods=['POST'])
 def add_to_inventory():
