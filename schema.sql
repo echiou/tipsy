@@ -14,7 +14,7 @@ create table liquor_db (
   price real not null,
   full real not null,
   empty real not null
-)
+);
 
 drop table if exists updates;
 create table updates (

@@ -1,0 +1,39 @@
+{% extends "layout.html" %}
+{% block body %}
+  <div class="container">
+    <div class="row">
+      <div class="twelve columns u-center">
+        <h2>Add New Inventory</h2>
+      </div>
+    </div>
+    <form action="{{ url_for('add_to_liquor_db') }}" method=post class=add-liquor>
+      <div class="row">
+        <div class="four columns">
+          <label>Add Brand</label>
+          <input class="u-full-width" type=text placeholder="Smirnoff Raspberry" name=name>
+        </div>
+        <div class="two columns">
+          <label>UPC</label>
+          <input class="u-full-width" type=text placeholder="84958398" name=upc>
+        </div>
+        <div class="two columns">
+          <label>Price</label>
+          <input class="u-full-width" type=text placeholder="($)20" name=price>
+        </div>
+        <div class="two columns">
+          <label>Full Weight</label>
+          <input class="u-full-width" type=text placeholder="10 (lbs.)" name=full>
+        </div>
+        <div class="two columns">
+          <label>Empty Weight</label>
+          <input class="u-full-width" type=text placeholder="10 (lbs.)" name=empty>
+        </div>
+      </div>
+      <div class="row">
+        <div class="twelve columns">
+          <input class="u-full-width button-primary" type=submit value=Add>
+        </div>
+      </div>
+    </form>
+  </div>
+{% endblock %}

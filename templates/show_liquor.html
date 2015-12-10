@@ -2,33 +2,37 @@
 {% block body %}
   <div class="container">
     <div class="row u-center">
-      <h2>Liquor Inventory</h2>
+      <h2>Liquor Database</h2>
     </div>
     <div class="row">
       <div class="twelve columns u-center">
-        {% if inventory %}
+        {% if liquor %}
           <table class="u-full-width">
             <thead>
               <tr>
                 <th>Brand</th>
-                <th>Quantity</th>
-                <th>Current</th>
+                <th>UPC</th>
+                <th>Price</th>
+                <th>Full Weight</th>
+                <th>Emtpy Weight</th>
               </tr>
             </thead>
             <tbody>
-              {% for brand in inventory %}
+              {% for brand in liquor %}
               <tr>
                 <td>{{ brand.name }}</td>
-                <td>{{ brand.quantity }}</td>
-                <td>{{ brand.current }}</td>
+                <td>{{ brand.UPC }}</td>
+                <td>{{ brand.price }}</td>
+                <td>{{ brand.full }}</td>
+                <td>{{ brand.empty }}</td>
               </tr>
               {% endfor %}
             <tbody>
           </table>
         {% else %}
-          <h3>No inventory yet!</h2>
-          <a href=/add_inventory>
-            <button class="u-full-width button-primary">Add New Inventory</button>
+          <h3>No liquor in database yet!</h2>
+          <a href=/add_liquor>
+            <button class="u-full-width button-primary">Add New liquor</button>
           </a>
         {% endif %}
       </div>
