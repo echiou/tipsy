@@ -14,7 +14,10 @@
   <div class="container u-top-container">
     <div class="row">
       <div class="twelve columns u-center">
-        <h1><a href="/">Tipsy</a></h1>
+        <a href="/">
+        <img class="logo" src="{{ url_for('static', filename='images/tipsy_logo.png') }}"/>
+        </a>
+        <!--<h1><a href="/">Tipsy</a></h1>-->
         {% for category, message in get_flashed_messages(with_categories=true) %}
         <script type=text/javascript>
           $(document).ready(function() {
