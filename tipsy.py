@@ -37,8 +37,8 @@ def connect_db():
 
 @app.route('/')
 def index():
-    cur = g.db.execute('select UPC, weight from updates order by id desc')
-    updates = [dict(UPC=row[0], weight=row[1]) for row in cur.fetchall()]
+    cur = g.db.execute('select name, percent from updates order by id desc')
+    updates = [dict(name=row[0], percent=row[1]) for row in cur.fetchall()]
     return render_template('index.html', updates=updates)
 
 @app.route('/add_inventory')
@@ -91,5 +91,16 @@ def update_inventory():
     g.db.commit()
     flash('brand was successfully updated')
     return redirect(url_for('index'))
+
+@app.route('/mark_empty_bottles', methods=['POST'])
+def mark_empty_bottles():
+    brand = request.form['name']
+    quantity = -float(request.form['quantity'])
+    g.db.execute('insert into updates(name, percent) values(?, ?)',
+                 [brand, quantity])
+    flash(str(quantity) + ' bottles of ' +  brand + ' marked as empty')
+    g.db.commit()
+    return redirect(url_for('mark_empty'))
+
 if __name__ == '__main__':
   app.run(host='0.0.0.0')
