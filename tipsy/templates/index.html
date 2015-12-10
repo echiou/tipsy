@@ -25,7 +25,7 @@
       <h4>Weight Updates</h4>
     </div>
     <div class="row">
-      <div class="twelve columns u-center">
+      <div class="six columns u-center">
         {% if updates %}
           <table class="u-full-width">
             <thead>
@@ -46,15 +46,15 @@
         {% else %}
           <h3>No updates!</h2>
         {% endif %}
+              <a href={{ url_for('confirm_updates') }}>
+            <button class="u-full-width button-primary">Update Inventory</button>
+        </a>
+      </div>
+      <div class="six columns u-center">
+        {% include 'line_chart.html' %}
       </div>
     </div>
-    <div class="row">
-        <div class="twelve columns">
-          <a href={{ url_for('confirm_updates') }}>
-            <button class="u-full-width button-primary">Update Inventory</button>
-          </a>
-        </div>
-    </div>
+
   </div>
   </div>
 {% endblock %}

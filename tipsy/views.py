@@ -10,7 +10,9 @@ from tipsy import app
 def index():
     cur = g.db.execute('select name, percent from updates order by id desc')
     updates = [dict(name=row[0], percent=row[1]) for row in cur.fetchall()]
-    return render_template('index.html', updates=updates)
+    labels = ["January","February","March","April","May","June","July","August"]
+    values = [10384,9283,8384,7394,6394,4203,7055,8493]
+    return render_template('index.html', updates=updates, values=values, labels=labels)
 
 @app.route('/add_inventory')
 def add_inventory():
@@ -108,4 +110,10 @@ def mark_empty_bottles():
     g.db.commit()
     flash(re.escape(str(int_quantity) + ' bottles of ' +  brand + ' marked as empty'), 'success')
     return redirect(url_for('mark_empty'))
+
+@app.route("/graph")
+def graph():
+    labels = ["January","February","March","April","May","June","July","August"]
+    values = [10384,9283,8384,7394,6394,4203,7055,8493]
+    return render_template('line_chart.html', values=values, labels=labels)
 
