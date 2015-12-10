@@ -37,7 +37,9 @@ def connect_db():
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    cur = g.db.execute('select UPC, weight from updates order by id desc')
+    updates = [dict(UPC=row[0], weight=row[1]) for row in cur.fetchall()]
+    return render_template('index.html', updates=updates)
 
 @app.route('/add_inventory')
 def add_inventory():
@@ -52,12 +54,6 @@ def show_inventory():
     cur = g.db.execute('select name from brands order by id desc')
     brands = [dict(name=row[0]) for row in cur.fetchall()]
     return render_template('show_inventory.html', brands=brands)
-
-@app.route('/live_feed')
-def show_live_feed():
-    cur = g.db.execute('select UPC, weight from updates order by id desc')
-    updates = [dict(UPC=row[0], weight=row[1]) for row in cur.fetchall()]
-    return render_template('live_feed.html', updates=updates)
 
 @app.route('/add', methods=['POST'])
 def add_brand():
@@ -74,7 +70,6 @@ def update_inventory():
                 [request.form['UPC'], request.form['weight']])
     g.db.commit()
     flash('brand was successfully updated')
-    return redirect(url_for('show_live_feed'))
-
+    return redirect(url_for('index'))
 if __name__ == '__main__':
   app.run(host='0.0.0.0')
