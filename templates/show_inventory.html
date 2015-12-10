@@ -6,7 +6,7 @@
     </div>
     <div class="row">
       <div class="twelve columns u-center">
-        {% if brands %}
+        {% if inventory %}
           <table class="u-full-width">
             <thead>
               <tr>
@@ -15,7 +15,7 @@
               </tr>
             </thead>
             <tbody>
-              {% for brand in brands %}
+              {% for brand in inventory %}
               <tr>
                 <td>{{ brand.name }}</td>
                 <td>{{ brand.quantity }}</td>
