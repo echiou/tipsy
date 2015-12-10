@@ -19,6 +19,6 @@ create table liquor_db (
 drop table if exists updates;
 create table updates (
   id integer primary key autoincrement,
-  UPC text not null,
-  weight text not null
+  name text not null,
+  percent real not null
 );
