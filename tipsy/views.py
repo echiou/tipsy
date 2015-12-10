@@ -36,6 +36,36 @@ def show_liquor():
     liquor = [dict(name=row[0], UPC=row[1], price=row[2], full=row[3], empty=row[4]) for row in cur.fetchall()]
     return render_template('show_liquor.html', liquor=liquor)
 
+@app.route('/confirm_updates')
+def confirm_updates():
+    cur = g.db.execute('select name, percent from updates order by id desc')
+    updates_to_commit = {}
+    for update in cur.fetchall():
+      name = update['name']
+      percent = update['percent']
+      record = g.db.execute('select * from inventory where name= ?',
+                [name]).fetchall()[0]
+      if record:
+        if percent < 0:
+          if name in updates_to_commit:
+            updates_to_commit[name][1] -= percent
+          else:
+            updates_to_commit[name] = [0, -percent]
+        else:
+          if name in updates_to_commit:
+            updates_to_commit[name][0] += (1-percent)
+          else:
+            updates_to_commit[name] = [1-percent, 0]
+
+    for name, update in updates_to_commit.iteritems():
+      old_record = g.db.execute('select * from inventory where name=?', [name]).fetchall()[0]
+      g.db.execute('update inventory set current=?, quantity=? where name=?',
+                   [old_record['current'] - update[0] - update[1], old_record['quantity'] - update[1], name])
+    g.db.execute('delete from updates')
+    g.db.commit()
+    flash('Inventory updated.', 'success')
+    return redirect(url_for('index'))
+
 @app.route('/add_inventory', methods=['POST'])
 def add_to_inventory():
     brand = request.form['name']
