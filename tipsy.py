@@ -11,6 +11,7 @@ SECRET_KEY = 'development key'
 USERNAME = 'admin'
 PASSWORD = 'default'
 
+#(name, UPC, price, full, empty)
 liquor_db_prepopulate = [('a', '111', 12.5,13.0,2.0),
                           ('b', '222', 15.0,12.0,2.3),
                           ('c', '333', 14.5,11.2,2.3)]
