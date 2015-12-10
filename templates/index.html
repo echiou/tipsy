@@ -38,7 +38,7 @@
               {% for update in updates %}
               <tr>
                 <td>{{ update.name }}</td>
-                <td>{{ update.percent }}</td>
+                <td>{{ "%.1f" % (update.percent * 100) + "%"}}</td>
               </tr>
               {% endfor %}
             <tbody>

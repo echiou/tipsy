@@ -11,6 +11,11 @@ SECRET_KEY = 'development key'
 USERNAME = 'admin'
 PASSWORD = 'default'
 
+#(name, UPC, price, full, empty)
+liquor_db_prepopulate = [('a', '111', 12.5,13.0,2.0),
+                          ('b', '222', 15.0,12.0,2.3),
+                          ('c', '333', 14.5,11.2,2.3)]
+
 app = Flask(__name__)
 app.config.from_object(__name__)
 
@@ -20,11 +25,15 @@ def init_db():
   with closing(connect_db()) as db:
     with app.open_resource('schema.sql', mode='r') as f:
       db.cursor().executescript(f.read())
+    for liquor in liquor_db_prepopulate:
+      db.execute('insert into liquor_db (name, UPC, price, full, empty) values (?, ?, ?, ?, ?)',
+                 [liquor[0], liquor[1], liquor[2], liquor[3], liquor[4]])
     db.commit()
 
 @app.before_request
 def before_request():
   g.db = connect_db()
+  g.db.row_factory = sqlite3.Row
 
 @app.teardown_request
 def teardown_request(exception):
@@ -79,15 +88,20 @@ def add_to_inventory():
 def add_to_liquor_db():
   brand = request.form['name']
   g.db.execute('insert into liquor_db (name, UPC, price, full, empty) values (?, ?, ?, ?, ?)',
-                [brand, request.form['upc'], request.form['price'], request.form['full'], request.form['empty']])
+      [brand, request.form['upc'], request.form['price'], request.form['full'], request.form['empty']])
   g.db.commit()
   flash(re.escape(brand + ' added to liquor database'), 'success')
   return redirect(url_for('add_liquor'))
 
 @app.route('/update', methods=['POST'])
 def update_inventory():
-    g.db.execute('insert into updates (UPC, weight) values (?, ?)',
-                [request.form['UPC'], request.form['weight']])
+    UPC, weight = request.form['UPC'], request.form['weight']
+    record = g.db.execute('select * from liquor_db where UPC= ?',
+                [UPC]).fetchall()[0]
+    name = record['name']
+    percent = (float(weight) - record['empty']) / (record['full'] - record['empty'])
+    g.db.execute('insert into updates (name, percent) values (?, ?)',
+                [name, percent])
     g.db.commit()
     flash('brand was successfully updated')
     return redirect(url_for('index'))
