@@ -49,9 +49,9 @@ def mark_empty():
 
 @app.route('/inventory')
 def show_inventory():
-    cur = g.db.execute('select name from brands order by id desc')
-    brands = [dict(name=row[0]) for row in cur.fetchall()]
-    return render_template('show_inventory.html', brands=brands)
+    cur = g.db.execute('select name from inventory order by id desc')
+    inventory = [dict(name=row[0]) for row in cur.fetchall()]
+    return render_template('show_inventory.html', inventory=inventory)
 
 @app.route('/live_feed')
 def show_live_feed():
@@ -62,8 +62,8 @@ def show_live_feed():
 @app.route('/add', methods=['POST'])
 def add_brand():
     brand = [request.form['name']]
-    g.db.execute('insert into brands (name) values (?)',
-                 brand)
+    g.db.execute('insert into inventory (name, quantity) values (?, ?)',
+                 [brand, request.form['quantity']])
     g.db.commit()
     flash(re.escape(' bottles of ' + brand[0] + ' added.'), 'success')
     return redirect(url_for('add_inventory'))
