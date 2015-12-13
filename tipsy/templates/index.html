@@ -21,11 +21,12 @@
     </div>
   </div>
   <div class="container u-top-container">
+
+    <div class="row">
+      <div class="six columns u-center">
     <div class="row u-center">
       <h4>Weight Updates</h4>
     </div>
-    <div class="row">
-      <div class="six columns u-center">
         {% if updates %}
           <table class="u-full-width">
             <thead>
@@ -51,6 +52,9 @@
         </a>
       </div>
       <div class="six columns u-center">
+    <div class="row u-center">
+      <h4>Inventory Value</h4>
+    </div>
         {% include 'line_chart.html' %}
       </div>
     </div>
